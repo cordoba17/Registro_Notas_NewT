@@ -1,3 +1,5 @@
+# Seleccion de usuario 
+
 print("Selecciona la opción que te corresponda:")
 select = input("a) Estudiante\nb) Profesor\n> ")
 
@@ -45,5 +47,12 @@ if user == userCorrectly and password == passwordCorrectly:
                 break
             case _:
                 print("\n❌ Opción no válida. Intenta de nuevo.")
+
+        if rol == "profesor":
+            estudiante = input("\nIngrese el nombre del estudiante: ").strip() # .stipt evita errores. limpieza ,facilita busqueda
+            nota = input(f"Ingrese la nota de {estudiante} en {materia}: ").strip()
+            notas[materia][estudiante] = nota
+            print(f"\n✅ Nota registrada: {estudiante} tiene {nota} en {materia}")
+
 else:
     print("\n❌ Error: Correo o contraseña incorrectos.")
