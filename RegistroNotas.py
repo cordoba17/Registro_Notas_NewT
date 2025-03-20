@@ -1,3 +1,20 @@
+import json
+import os
+
+# Archivo donde se guardarán las notas
+archivo_notas = "notas.json"
+
+# 📌 Cargar las notas desde el archivo si existe, o inicializar un diccionario vacío
+if os.path.exists(archivo_notas):
+    with open(archivo_notas, "r") as file:
+        notas = json.load(file)
+else:
+    notas = {
+        "Matemáticas": {},
+        "Inglés": {},
+        "Química": {}
+    }
+
 # Selección de usuario
 print("Selecciona la opción que te corresponda:")
 select = input("a) Estudiante\nb) Profesor\n> ").strip().lower()
@@ -10,7 +27,7 @@ match select:
         print("\nBienvenido Profesor")
         rol = "profesor"
     case _:
-        print("\n❌ Opción no válida. Saliendo del programa.")
+        print("\n❌ Opción no válida. Saliendo del programa.") 
         exit()
 
 # Registro de usuario
@@ -25,9 +42,6 @@ password = input("Ingrese contraseña: ").strip()
 
 if user == userCorrectly and password == passwordCorrectly:
     print(f"\n✅ Bienvenido {user}")
-
-    # Diccionario para almacenar notas
-    notas = {"Matemáticas": {}, "Inglés": {}, "Química": {}}
 
     while True:
         print("\n📚 MENÚ DE MATERIAS")
@@ -47,6 +61,11 @@ if user == userCorrectly and password == passwordCorrectly:
                 materia = "Química"
             case "4":
                 print("\n👋 Saliendo del programa. ¡Hasta luego!")
+                
+                # 📌 Guardar las notas en el archivo antes de salir
+                with open(archivo_notas, "w") as file:
+                    json.dump(notas, file, indent=4)
+
                 break
             case _:
                 print("\n❌ Opción no válida. Intenta de nuevo.")
@@ -55,14 +74,25 @@ if user == userCorrectly and password == passwordCorrectly:
         if rol == "profesor":
             estudiante = input("\nIngrese el nombre del estudiante: ").strip()
             nota = input(f"Ingrese la nota de {estudiante} en {materia}: ").strip()
-            notas[materia][estudiante] = nota
-            print(f"\n✅ Nota registrada: {estudiante} tiene {nota} en {materia}")
+
+            # 📌 Si el estudiante no tiene notas en la materia, inicializamos una lista
+            if estudiante not in notas[materia]:
+                notas[materia][estudiante] = []
+
+            # Agregar la nueva nota a la lista
+            notas[materia][estudiante].append(nota)
+
+            # 📌 Guardar automáticamente cada vez que se agregan notas
+            with open(archivo_notas, "w") as file:
+                json.dump(notas, file, indent=4)
+
+            print(f"\n✅ Nota registrada: {estudiante} tiene {notas[materia][estudiante]} en {materia}")
 
         elif rol == "estudiante":
             if user in notas[materia]:
-                print(f"\n📌 Tu nota en {materia} es: {notas[materia][user]}")
+                print(f"\n📌 Tus notas en {materia} son: {notas[materia][user]}")
             else:
                 print("\n📌 No hay notas registradas para esta materia.")
 
-else:
-    print("\n❌ Error: Correo o contraseña incorrectos.")
+else: print(f"Usuario o contraseña incorrecta")
+
