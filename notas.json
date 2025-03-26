@@ -1,9 +1,20 @@
 {
     "Matem\u00e1ticas": {
-        "juan": [
-            "5"
+        "juan": [],
+        "diego": [
+            4.0,
+            2.0
+        ],
+        "dieg": []
+    },
+    "Ingl\u00e9s": {
+        "diego": [
+            5.0
         ]
     },
-    "Ingl\u00e9s": {},
-    "Qu\u00edmica": {}
+    "Qu\u00edmica": {
+        "diego": [
+            2.0
+        ]
+    }
 }
